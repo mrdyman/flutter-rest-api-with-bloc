@@ -1,7 +1,12 @@
+import 'package:context_holder/context_holder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:technical_test_idstar/app/dashboard/bloc/dashboard_bloc.dart';
 import 'package:technical_test_idstar/app/dashboard/dashboard_screen.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -12,10 +17,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Technical Test IDSTAR',
+      navigatorKey: ContextHolder.key,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const DashboardScreen(),
+      home: BlocProvider<DashboardBloc>(
+        create: (context) => DashboardBloc(),
+        child: const DashboardScreen(),
+      ),
     );
   }
 }
