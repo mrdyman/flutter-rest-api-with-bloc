@@ -4,3 +4,5 @@ part of 'detail_user_bloc.dart';
 abstract class DetailUserState {}
 
 class DetailUserInitial extends DetailUserState {}
+
+class EditingUser extends DetailUserState {}
