@@ -1,16 +1,14 @@
-# technical_test_idstar
+# REST API with BLoC State Management
 
-A new Flutter project.
+Stack :
+- DIO for API Client
+- BLoC State Management
 
-## Getting Started
+Feature :
+- Create New User
+- Show List Users with Infinite Scroll
+- Update User
+- Delete User
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Resources :
+https://gorest.co.in/ => REST API SERVER
