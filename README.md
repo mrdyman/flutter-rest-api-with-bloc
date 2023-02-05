@@ -9,6 +9,7 @@ Feature :
 - Show List Users with Infinite Scroll
 - Update User
 - Delete User
+- Search Data Users
 
 Resources :
 https://gorest.co.in/ => REST API SERVER
