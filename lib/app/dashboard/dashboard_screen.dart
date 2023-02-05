@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:technical_test_idstar/app/dashboard/bloc/dashboard_bloc.dart';
+import 'package:technical_test_idstar/app/detail/bloc/detail_user_bloc.dart';
+import 'package:technical_test_idstar/app/detail/detail_user_screen.dart';
 
 import '../../models/user.dart';
 
@@ -43,7 +45,7 @@ class DashboardScreen extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: users!.length,
                     itemBuilder: (context, index) {
-                      return buildCardItem(index, users[index]);
+                      return buildCardItem(context, index, users[index], bloc);
                     },
                   ),
                 ),
@@ -62,29 +64,33 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Padding buildCardItem(int index, User users) {
+  Padding buildCardItem(
+      BuildContext context, int index, User users, DashboardBloc bloc) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: Colors.white),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("ID : ${users.id}"),
-                  Text("Name : ${users.name}"),
-                  Text("Email : ${users.email}"),
-                  Text("Gender : ${users.gender}"),
-                  Text("Status : ${users.status}"),
-                ],
+      child: GestureDetector(
+        onTap: () => bloc.add(DetailUser(users)),
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10), color: Colors.white),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("ID : ${users.id}"),
+                    Text("Name : ${users.name}"),
+                    Text("Email : ${users.email}"),
+                    Text("Gender : ${users.gender}"),
+                    Text("Status : ${users.status}"),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

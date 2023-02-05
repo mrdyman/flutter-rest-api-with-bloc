@@ -20,12 +20,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       emit(DashboardLoaded(users: user));
     });
     on<CreateUser>((event, emit) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => BlocProvider<DetailUserBloc>(
                   create: (context) => DetailUserBloc(),
-                  child: const DetailUserScreen(),
+                  child: const DetailUserScreen(isCreate: true),
+                )),
+      );
+    });
+
+    on<DetailUser>((event, emit) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => BlocProvider<DetailUserBloc>(
+                  create: (context) => DetailUserBloc(),
+                  child: DetailUserScreen(user: event.user, isCreate: false),
                 )),
       );
     });

@@ -33,7 +33,10 @@ class DioClient {
     try {
       Response response = await _dio.get("/users",
           options: Options(
-            headers: {"Accept": "application/json"},
+            headers: {
+              "Accept": "application/json",
+              "authorization": "Bearer $token",
+            },
           ));
       user = userFromJson(response.data);
     } on DioError catch (e) {
@@ -83,7 +86,7 @@ class DioClient {
     return user;
   }
 
-  Future<bool> deleteResult({required int id}) async {
+  Future<bool> deleteUser({required int id}) async {
     try {
       Response response = await _dio.delete("/users/$id",
           options: Options(
@@ -92,7 +95,7 @@ class DioClient {
               "authorization": "Bearer $token",
             },
           ));
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         return true;
       }
       return false;
