@@ -28,7 +28,7 @@ class DioClient {
       maxWidth: 90,
     ));
 
-  Future<List<User>?> getUsers() async {
+  Future<List<User>?> getUsers({int? page = 1, int? perPage = 10}) async {
     List<User>? user;
     try {
       Response response = await _dio.get("/users",
@@ -37,7 +37,11 @@ class DioClient {
               "Accept": "application/json",
               "authorization": "Bearer $token",
             },
-          ));
+          ),
+          queryParameters: {
+            "page": page,
+            "per_page": perPage,
+          });
       user = userFromJson(response.data);
     } on DioError catch (e) {
       debugPrint(e.message);

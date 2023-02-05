@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:technical_test_idstar/app/dashboard/bloc/dashboard_bloc.dart';
-import 'package:technical_test_idstar/app/detail/bloc/detail_user_bloc.dart';
-import 'package:technical_test_idstar/app/detail/detail_user_screen.dart';
 
 import '../../models/user.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
   @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  ScrollController controller = ScrollController();
+  late DashboardBloc bloc;
+  late List<User>? users;
+
+  void onScroll() {
+    double maxScroll = controller.position.maxScrollExtent;
+    double currentScroll = controller.position.pixels;
+
+    if (currentScroll == maxScroll) {
+      bloc.add(GetInfinityUsers(users: users));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    DashboardBloc bloc = BlocProvider.of<DashboardBloc>(context);
+    bloc = BlocProvider.of<DashboardBloc>(context);
     bloc.add(GetUsers());
+    controller.addListener(onScroll);
     return Scaffold(
       appBar: AppBar(
         title: const Text("TECHNICAL TEST IDSTAR"),
@@ -22,7 +39,7 @@ class DashboardScreen extends StatelessWidget {
       body: BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
           if (state is DashboardLoaded) {
-            List<User>? users = (state).users;
+            users = (state).users;
             return Column(
               children: [
                 Padding(
@@ -45,9 +62,17 @@ class DashboardScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: users!.length,
+                    controller: controller,
+                    itemCount: users!.length + 1,
                     itemBuilder: (context, index) {
-                      return buildCardItem(context, index, users[index], bloc);
+                      return index < users!.length
+                          ? buildCardItem(context, index, users![index], bloc)
+                          : const Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: SizedBox(
+                                  child: Center(
+                                      child: CircularProgressIndicator())),
+                            );
                     },
                   ),
                 ),
