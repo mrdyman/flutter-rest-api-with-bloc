@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:context_holder/context_holder.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +18,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       emit(DashboardLoading());
       List<User>? user = await getUsers();
       emit(DashboardLoaded(users: user));
+    });
+
+    on<GetInfinityUsers>((event, emit) async {
+      List<User>? currentUser = event.users;
+      List<User>? user =
+          await getUsers(page: currentUser!.length ~/ 10 + 1, perPage: 10);
+      currentUser.addAll(user!);
+      emit(DashboardLoaded(users: currentUser));
     });
 
     on<CreateUser>((event, emit) {
@@ -51,10 +57,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     });
   }
 
-  Future<List<User>?> getUsers() async {
+  Future<List<User>?> getUsers({int? page, int? perPage}) async {
     List<User>? users;
     try {
-      List<User>? response = await DioClient().getUsers();
+      List<User>? response =
+          await DioClient().getUsers(page: page, perPage: perPage);
       users = response;
     } on DioError catch (e) {
       debugPrint(e.message);

@@ -5,6 +5,11 @@ abstract class DashboardEvent {}
 
 class GetUsers extends DashboardEvent {}
 
+class GetInfinityUsers extends DashboardEvent {
+  final List<User>? users;
+  GetInfinityUsers({this.users});
+}
+
 class CreateUser extends DashboardEvent {}
 
 class DetailUser extends DashboardEvent {
