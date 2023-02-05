@@ -7,4 +7,7 @@ class GetUsers extends DashboardEvent {}
 
 class CreateUser extends DashboardEvent {}
 
-class DetailUser extends DashboardEvent {}
+class DetailUser extends DashboardEvent {
+  final User user;
+  DetailUser(this.user);
+}
