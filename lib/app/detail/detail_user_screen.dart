@@ -107,7 +107,7 @@ class DetailUserScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         ElevatedButton(
-                            onPressed: () => 1,
+                            onPressed: () => bloc.add(DeleteUser(user!.id)),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.redAccent,
                                 minimumSize: const Size.fromHeight(50)),

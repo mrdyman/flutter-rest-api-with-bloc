@@ -86,7 +86,7 @@ class DioClient {
     return user;
   }
 
-  Future<bool> deleteResult({required int id}) async {
+  Future<bool> deleteUser({required int id}) async {
     try {
       Response response = await _dio.delete("/users/$id",
           options: Options(
@@ -95,7 +95,7 @@ class DioClient {
               "authorization": "Bearer $token",
             },
           ));
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         return true;
       }
       return false;

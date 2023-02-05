@@ -25,6 +25,10 @@ class DetailUserBloc extends Bloc<DetailUserEvent, DetailUserState> {
     on<StoreUser>((event, emit) async {
       await createUser(user: event.user);
     });
+
+    on<DeleteUser>((event, emit) async {
+      await deleteUser(userId: event.userId);
+    });
   }
 
   Future<void> createUser({required User user}) async {
@@ -63,6 +67,24 @@ class DetailUserBloc extends Bloc<DetailUserEvent, DetailUserState> {
         status: user.status,
       ));
       if (response != null && context.mounted) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BlocProvider<DashboardBloc>(
+                      create: (context) => DashboardBloc(),
+                      child: const DashboardScreen(),
+                    )));
+      }
+    } on DioError catch (e) {
+      debugPrint(e.message);
+      return;
+    }
+  }
+
+  Future<void> deleteUser({required int userId}) async {
+    try {
+      bool response = await DioClient().deleteUser(id: userId);
+      if (response && context.mounted) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
