@@ -38,7 +38,9 @@ class DashboardScreen extends StatelessWidget {
                         labelStyle: TextStyle(
                           color: Colors.black,
                         )),
-                    onChanged: (value) => debugPrint(value),
+                    onChanged: (value) => value == ""
+                        ? bloc.add(GetUsers())
+                        : bloc.add(SearchUser(state.users!, value)),
                   ),
                 ),
                 Expanded(

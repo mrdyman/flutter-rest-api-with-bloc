@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:context_holder/context_holder.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       List<User>? user = await getUsers();
       emit(DashboardLoaded(users: user));
     });
+
     on<CreateUser>((event, emit) {
       Navigator.push(
         context,
@@ -40,6 +43,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                 )),
       );
     });
+
+    on<SearchUser>((event, emit) {
+      emit(DashboardLoading());
+      List<User>? result = searchUser(event.user, event.keyword);
+      emit(DashboardLoaded(users: result));
+    });
   }
 
   Future<List<User>?> getUsers() async {
@@ -51,5 +60,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       debugPrint(e.message);
     }
     return users;
+  }
+
+  searchUser(List<User> data, String keyword) {
+    return data.where((e) => e.name.contains(keyword)).toList();
   }
 }
