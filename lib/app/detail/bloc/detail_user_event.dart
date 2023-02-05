@@ -9,3 +9,8 @@ class UpdateUser extends DetailUserEvent {
   final User user;
   UpdateUser(this.user);
 }
+
+class StoreUser extends DetailUserEvent {
+  final User user;
+  StoreUser(this.user);
+}

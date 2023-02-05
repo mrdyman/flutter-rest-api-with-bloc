@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:technical_test_idstar/app/dashboard/bloc/dashboard_bloc.dart';
@@ -47,7 +45,7 @@ class DashboardScreen extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: users!.length,
                     itemBuilder: (context, index) {
-                      return buildCardItem(context, index, users[index]);
+                      return buildCardItem(context, index, users[index], bloc);
                     },
                   ),
                 ),
@@ -66,19 +64,12 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Padding buildCardItem(BuildContext context, int index, User users) {
+  Padding buildCardItem(
+      BuildContext context, int index, User users, DashboardBloc bloc) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
       child: GestureDetector(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => BlocProvider<DetailUserBloc>(
-                      create: (context) => DetailUserBloc(),
-                      child: DetailUserScreen(
-                        user: users,
-                      ),
-                    ))),
+        onTap: () => bloc.add(DetailUser(users)),
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10), color: Colors.white),

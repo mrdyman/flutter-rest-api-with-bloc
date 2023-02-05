@@ -33,7 +33,10 @@ class DioClient {
     try {
       Response response = await _dio.get("/users",
           options: Options(
-            headers: {"Accept": "application/json"},
+            headers: {
+              "Accept": "application/json",
+              "authorization": "Bearer $token",
+            },
           ));
       user = userFromJson(response.data);
     } on DioError catch (e) {
